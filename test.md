@@ -1,0 +1,539 @@
+```mermaid
+graph LR
+/planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker--> ||  /planning/scenario_planning/clear_velocity_limit
+/planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker--> ||  /planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker/virtual_wall
+/planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker--> ||  /planning/scenario_planning/max_velocity_candidates
+/planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker--> ||  /planning/velocity_factors/surround_obstacle
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner--> ||  /planning/scenario_planning/clear_velocity_limit
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner--> ||  /planning/scenario_planning/max_velocity_candidates
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner--> ||  /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner/virtual_wall
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner--> ||  /planning/scenario_planning/lane_driving/trajectory
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner--> ||  /planning/velocity_factors/obstacle_stop
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner--> ||  /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/trajectory
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner--> ||  /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/virtual_wall
+/planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter--> ||  /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter/trajectory
+/system/mrm_emergency_stop_operator--> ||  /system/emergency/control_cmd
+/system/mrm_emergency_stop_operator--> ||  /system/mrm/emergency_stop/status
+/planning/mission_planning/goal_pose_visualizer--> ||  /planning/mission_planning/echo_back_goal_pose
+/sensing/camera/v4l2_camera_default_cam--> ||  /sensing/camera/default_cam/camera_info
+/sensing/camera/v4l2_camera_default_cam--> ||  /sensing/camera/default_cam/image
+/system/system_error_monitor--> ||  /system/emergency/hazard_status
+/perception/object_recognition/detection/object_association_merger_npc230120_665566_284759802789981393--> ||  /perception/object_recognition/detection/temporary_merged_objects
+/perception/object_recognition/detection/clustering/voxel_grid_filter_npc230120_665566_2120607776796521301--> ||  /perception/object_recognition/detection/clustering/downsampled/short_range/pointcloud
+/perception/object_recognition/detection/clustering/short_distance_crop_box_range--> ||  /perception/object_recognition/detection/clustering/short_range/pointcloud
+/perception/object_recognition/detection/clustering/outlier_filter--> ||  /perception/object_recognition/detection/clustering/outlier_filter/pointcloud
+/perception/object_recognition/detection/clustering/long_distance_crop_box_range--> ||  /perception/object_recognition/detection/clustering/long_range/pointcloud
+/perception/object_recognition/detection/clustering/concat_downsampled_pcl--> ||  /diagnostics
+/perception/object_recognition/detection/clustering/concat_downsampled_pcl--> ||  /perception/object_recognition/detection/clustering/downsampled/concatenated/pointcloud
+/perception/object_recognition/detection/clustering/euclidean_cluster--> ||  /perception/object_recognition/detection/clustering/clusters
+/perception/object_recognition/prediction/map_based_prediction--> ||  /perception/object_recognition/objects
+/perception/object_recognition/detection/detection_by_tracker/detection_by_tracker_node--> ||  /perception/object_recognition/detection/detection_by_tracker/objects
+/perception/object_recognition/detection/object_association_merger_npc230120_665566_6682532984608266669--> ||  /perception/object_recognition/detection/objects_before_filter
+/sensing/imu/imu_corrector--> ||  /sensing/imu/imu_data
+/sensing/lidar/front/velodyne_monitor--> ||  /diagnostics
+/localization/util/crop_box_filter_measurement_range--> ||  /localization/util/measurement_range/pointcloud
+/perception/object_recognition/detection/voxel_based_compare_map_filter--> ||  /perception/object_recognition/detection/pointcloud_map_filtered/pointcloud
+/sensing/lidar/front/velodyne_convert_node--> ||  /sensing/lidar/front/pointcloud_raw_ex
+/sensing/lidar/front/velodyne_driver--> ||  /diagnostics
+/sensing/lidar/front/velodyne_driver--> ||  /sensing/lidar/front/velodyne_packets
+/sensing/lidar/rear/velodyne_driver--> ||  /diagnostics
+/sensing/lidar/rear/velodyne_driver--> ||  /sensing/lidar/rear/velodyne_packets
+/sensing/lidar/rear/velodyne_convert_node--> ||  /sensing/lidar/rear/pointcloud_raw_ex
+/perception/obstacle_segmentation/crop_box_filter--> ||  /perception/obstacle_segmentation/range_cropped/pointcloud
+/sensing/lidar/concatenate_data--> ||  /diagnostics
+/sensing/lidar/concatenate_data--> ||  /sensing/lidar/concatenated/pointcloud
+/perception/occupancy_grid_map/occupancy_grid_map_node--> ||  /perception/occupancy_grid_map/map
+/localization/util/voxel_grid_downsample_filter--> ||  /localization/util/voxel_grid_downsample/pointcloud
+/sensing/lidar/front/crop_box_filter_self--> ||  /sensing/lidar/front/self_cropped/pointcloud_ex
+/sensing/lidar/rear/crop_box_filter_self--> ||  /sensing/lidar/rear/self_cropped/pointcloud_ex
+/perception/obstacle_segmentation/common_ground_filter--> ||  /perception/obstacle_segmentation/single_frame/pointcloud_raw
+/localization/util/random_downsample_filter--> ||  /localization/util/downsample/pointcloud
+/sensing/lidar/front/crop_box_filter_mirror--> ||  /sensing/lidar/front/mirror_cropped/pointcloud_ex
+/sensing/lidar/rear/crop_box_filter_mirror--> ||  /sensing/lidar/rear/mirror_cropped/pointcloud_ex
+/perception/obstacle_segmentation/occupancy_grid_map_outlier_filter--> ||  /perception/obstacle_segmentation/pointcloud
+/sensing/lidar/front/distortion_corrector_node--> ||  /sensing/lidar/front/rectified/pointcloud_ex
+/sensing/lidar/rear/distortion_corrector_node--> ||  /sensing/lidar/rear/rectified/pointcloud_ex
+/sensing/lidar/front/ring_outlier_filter--> ||  /sensing/lidar/front/outlier_filtered/pointcloud
+/sensing/lidar/rear/ring_outlier_filter--> ||  /sensing/lidar/rear/outlier_filtered/pointcloud
+/localization/pose_twist_fusion_filter/stop_filter--> ||  /localization/kinematic_state
+/localization/util/pose_initializer_node--> ||  /initialpose3d
+/localization/util/pose_initializer_node--> ||  /localization/initialization_state
+/localization/util/pose_initializer_node--> ||  /service_log
+/jw_interface_awiv_adapt_receiver--> ||  /vehicle/status/control_mode
+/jw_interface_awiv_adapt_receiver--> ||  /vehicle/status/gear_status
+/jw_interface_awiv_adapt_receiver--> ||  /vehicle/status/steering_status
+/jw_interface_awiv_adapt_receiver--> ||  /vehicle/status/velocity_status
+/perception/object_recognition/detection/obstacle_pointcloud_based_validator_node--> ||  /perception/object_recognition/detection/centerpoint/validation/objects
+/localization/localization_error_monitor--> ||  /diagnostics
+/dummy_diag_publisher--> ||  /diagnostics
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/avoidance_left
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/avoidance_right
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/external_request_lane_change_left
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/external_request_lane_change_right
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/lane_change_left
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/lane_change_right
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/pull_out
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/cooperate_status/pull_over
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/hazard_lights_cmd
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/path_candidate/avoidance
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/path_candidate/external_request_lane_change_left
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/path_candidate/external_request_lane_change_right
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/path_candidate/lane_change
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/path_candidate/pull_out
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/path_candidate/pull_over
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/bound
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/path_with_lane_id
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/scenario_planning/modified_goal
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/steering_factor/avoidance
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/steering_factor/intersection
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/steering_factor/lane_change
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/steering_factor/pull_out
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/steering_factor/pull_over
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner--> ||  /planning/turn_indicators_cmd
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/blind_spot
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/crosswalk
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/detection_area
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/intersection
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/intersection_occlusion
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/no_stopping_area
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/cooperate_status/traffic_light
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/blind_spot
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/crosswalk
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/detection_area
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/intersection
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/merge_from_private
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/no_stopping_area
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/out_of_lane
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/stop_line
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/traffic_light
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/walkway
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/scenario_planning/lane_driving/behavior_planning/path
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/blind_spot
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/crosswalk
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/detection_area
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/intersection
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/merge_from_private
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/no_stopping_area
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/stop_line
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/traffic_light
+/planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner--> ||  /planning/velocity_factors/walkway
+/localization/twist_estimator/gyro_odometer--> ||  /localization/twist_estimator/twist_with_covariance
+/perception/object_recognition/detection/clustering/shape_estimation--> ||  /perception/object_recognition/detection/clustering/objects_with_feature
+/perception/traffic_light_recognition/traffic_light_image_decompressor--> ||  /sensing/camera/traffic_light/image_raw
+/perception/traffic_light_recognition/crosswalk_traffic_light_estimator--> ||  /perception/traffic_light_recognition/traffic_signals
+/perception/traffic_light_recognition/traffic_light_classifier--> ||  /perception/traffic_light_recognition/classified/traffic_signals
+/perception/traffic_light_recognition/traffic_light_ssd_fine_detector--> ||  /perception/traffic_light_recognition/rois
+/perception/traffic_light_recognition/traffic_light_roi_visualizer--> ||  /perception/traffic_light_recognition/debug/rois
+/localization/util/default_ad_api/helpers/automatic_pose_initializer--> ||  /service_log
+/system/topic_state_monitor_transform_map_to_base_link--> ||  /diagnostics
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/control
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/localization
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/map
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/perception
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/planning
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/sensing
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/system
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/autonomous/vehicle
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/control
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/localization
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/map
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/perception
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/planning
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/sensing
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/system
+/system/component_state_monitor/component--> ||  /system/component_state_monitor/component/launch/vehicle
+/default_ad_api/helpers/initial_pose_adaptor--> ||  /service_log
+/default_ad_api/helpers/routing_adaptor--> ||  /service_log
+/aggregator_node--> ||  /diagnostics_agg
+/jw_interface--> ||  /jw/status
+/perception/traffic_light_recognition/traffic_light_map_based_detector--> ||  /perception/traffic_light_recognition/rough/rois
+/perception/traffic_light_recognition/traffic_light_map_based_detector--> ||  /perception/traffic_light_recognition/traffic_light_map_based_detector/debug/markers
+/system/topic_state_monitor_vector_map--> ||  /diagnostics
+/system/topic_state_monitor_control_command_control_cmd--> ||  /diagnostics
+/perception/object_recognition/detection/clustering/detected_object_feature_remover--> ||  /perception/object_recognition/detection/clustering/objects
+/system/topic_state_monitor_vehicle_status_steering_status--> ||  /diagnostics
+/system/topic_state_monitor_vehicle_status_velocity_status--> ||  /diagnostics
+/localization/pose_estimator/ndt_scan_matcher--> ||  /diagnostics
+/localization/pose_estimator/ndt_scan_matcher--> ||  /localization/pose_estimator/monte_carlo_initial_pose_marker
+/localization/pose_estimator/ndt_scan_matcher--> ||  /localization/pose_estimator/pose_with_covariance
+/system/topic_state_monitor_initialpose3d--> ||  /diagnostics
+/system/mrm_comfortable_stop_operator--> ||  /planning/scenario_planning/clear_velocity_limit
+/system/mrm_comfortable_stop_operator--> ||  /planning/scenario_planning/max_velocity_candidates
+/system/mrm_comfortable_stop_operator--> ||  /system/mrm/comfortable_stop/status
+/planning/mission_planning/mission_planner--> ||  /service_log
+/planning/mission_planning/mission_planner--> ||  /planning/mission_planning/route
+/planning/mission_planning/mission_planner--> ||  /planning/mission_planning/route_marker
+/planning/mission_planning/mission_planner--> ||  /planning/mission_planning/route_state
+/planning/planning_validator--> ||  /diagnostics
+/planning/planning_validator--> ||  /planning/scenario_planning/trajectory
+/perception/object_recognition/tracking/multi_object_tracker--> ||  /perception/object_recognition/tracking/objects
+/system/topic_state_monitor_mission_planning_route--> ||  /diagnostics
+/planning/scenario_planning/motion_velocity_smoother--> ||  /planning/scenario_planning/current_max_velocity
+/planning/scenario_planning/motion_velocity_smoother--> ||  /planning/scenario_planning/motion_velocity_smoother/trajectory
+/perception/object_recognition/detection/centerpoint/lidar_centerpoint--> ||  /perception/object_recognition/detection/centerpoint/objects
+/map/lanelet2_map_visualization--> ||  /map/vector_map_marker
+/map/pointcloud_map_loader--> ||  /map/pointcloud_map
+/system/emergency_handler--> ||  /system/emergency/gear_cmd
+/system/emergency_handler--> ||  /system/emergency/hazard_lights_cmd
+/system/emergency_handler--> ||  /system/fail_safe/mrm_state
+/sensing/camera/v4l2_camera_c1--> ||  /sensing/camera/c1/camera_info
+/sensing/camera/v4l2_camera_c1--> ||  /sensing/camera/c1/image
+/sensing/lidar/rear/velodyne_monitor--> ||  /diagnostics
+/system/topic_state_monitor_scenario_planning_trajectory--> ||  /diagnostics
+/system/topic_state_monitor_obstacle_segmentation_pointcloud--> ||  /diagnostics
+/localization/pose_twist_fusion_filter/twist2accel--> ||  /localization/acceleration
+/localization/pose_twist_fusion_filter/ekf_localizer--> ||  /localization/pose_twist_fusion_filter/biased_pose_with_covariance
+/localization/pose_twist_fusion_filter/ekf_localizer--> ||  /localization/pose_twist_fusion_filter/kinematic_state
+/localization/pose_twist_fusion_filter/ekf_localizer--> ||  /localization/pose_twist_fusion_filter/pose
+/system/topic_state_monitor_system_emergency_control_cmd--> ||  /diagnostics
+/system/system_monitor/mem_monitor--> ||  /diagnostics
+/system/system_monitor/net_monitor--> ||  /diagnostics
+/system/system_monitor/ntp_monitor--> ||  /diagnostics
+/system/system_monitor/process_monitor--> ||  /diagnostics
+/system/system_monitor/hdd_monitor--> ||  /diagnostics
+/system/system_monitor/gpu_monitor--> ||  /diagnostics
+/system/system_monitor/voltage_monitor--> ||  /diagnostics
+/system/topic_state_monitor_object_recognition_objects--> ||  /diagnostics
+/planning/scenario_planning/scenario_selector--> ||  /planning/scenario_planning/scenario
+/planning/scenario_planning/scenario_selector--> ||  /planning/scenario_planning/scenario_selector/trajectory
+/system/service_log_checker--> ||  /diagnostics
+/planning/scenario_planning/external_velocity_limit_selector--> ||  /planning/scenario_planning/max_velocity
+/control/external_cmd_converter--> ||  /diagnostics
+/control/external_cmd_converter--> ||  /external/selected/control_cmd
+/control/trajectory_follower/controller_node_exe--> ||  /diagnostics
+/control/trajectory_follower/controller_node_exe--> ||  /control/trajectory_follower/control_cmd
+/control/trajectory_follower/controller_node_exe--> ||  /control/trajectory_follower/lateral/predicted_trajectory
+/control/external_cmd_selector--> ||  /diagnostics
+/control/external_cmd_selector--> ||  /control/external_cmd_selector/current_selector_mode
+/control/external_cmd_selector--> ||  /external/selected/external_control_cmd
+/control/external_cmd_selector--> ||  /external/selected/gear_cmd
+/control/external_cmd_selector--> ||  /external/selected/hazard_lights_cmd
+/control/external_cmd_selector--> ||  /external/selected/heartbeat
+/control/external_cmd_selector--> ||  /external/selected/turn_indicators_cmd
+/control/trajectory_follower/lane_departure_checker_node--> ||  /diagnostics
+/control/shift_decider--> ||  /control/shift_decider/gear_cmd
+/control/vehicle_cmd_gate--> ||  /diagnostics
+/control/vehicle_cmd_gate--> ||  /service_log
+/control/vehicle_cmd_gate--> ||  /api/autoware/get/emergency
+/control/vehicle_cmd_gate--> ||  /api/autoware/get/engage
+/control/vehicle_cmd_gate--> ||  /control/command/control_cmd
+/control/vehicle_cmd_gate--> ||  /control/command/emergency_cmd
+/control/vehicle_cmd_gate--> ||  /control/command/gear_cmd
+/control/vehicle_cmd_gate--> ||  /control/current_gate_mode
+/control/vehicle_cmd_gate--> ||  /control/vehicle_cmd_gate/is_paused
+/control/vehicle_cmd_gate--> ||  /control/vehicle_cmd_gate/is_start_requested
+/control/vehicle_cmd_gate--> ||  /control/vehicle_cmd_gate/operation_mode
+/control/operation_mode_transition_manager--> ||  /service_log
+/control/operation_mode_transition_manager--> ||  /autoware/engage
+/control/operation_mode_transition_manager--> ||  /control/gate_mode_cmd
+/control/operation_mode_transition_manager--> ||  /system/operation_mode/state
+/default_ad_api/node/autoware_state--> ||  /autoware/state
+/default_ad_api/node/fail_safe--> ||  /api/fail_safe/mrm_state
+/default_ad_api/node/interface--> ||  /service_log
+/default_ad_api/node/localization--> ||  /service_log
+/default_ad_api/node/localization--> ||  /api/localization/initialization_state
+/default_ad_api/node/motion--> ||  /service_log
+/default_ad_api/node/motion--> ||  /api/motion/state
+/default_ad_api/node/operation_mode--> ||  /service_log
+/default_ad_api/node/operation_mode--> ||  /api/operation_mode/state
+/default_ad_api/node/routing--> ||  /service_log
+/default_ad_api/node/routing--> ||  /api/routing/state
+/system/topic_state_monitor_trajectory_follower_control_cmd--> ||  /diagnostics
+/jw_interface_awiv_adapt_sender--> ||  /jw/command
+/microstrain_inertial_driver--> ||  /microstrain_inertial_driver/transition_event
+/robot_state_publisher--> ||  /robot_description
+/system/topic_state_monitor_pointcloud_map--> ||  /diagnostics
+/sensing/imu/vehicle_velocity_converter_node--> ||  /sensing/vehicle_velocity_converter/twist_with_covariance
+/perception/object_recognition/detection/object_lanelet_filter--> ||  /perception/object_recognition/detection/objects
+/system/topic_state_monitor_pose_twist_fusion_filter_pose--> ||  /diagnostics
+ /localization/kinematic_state--> || /planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker
+ /localization/kinematic_state--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner
+ /localization/kinematic_state--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner
+ /localization/kinematic_state--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter
+ /localization/kinematic_state--> || /localization/localization_error_monitor
+ /localization/kinematic_state--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /localization/kinematic_state--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /localization/kinematic_state--> || /localization/pose_estimator/ndt_scan_matcher
+ /localization/kinematic_state--> || /planning/mission_planning/mission_planner
+ /localization/kinematic_state--> || /planning/planning_validator
+ /localization/kinematic_state--> || /planning/scenario_planning/motion_velocity_smoother
+ /localization/kinematic_state--> || /system/emergency_handler
+ /localization/kinematic_state--> || /localization/pose_twist_fusion_filter/twist2accel
+ /localization/kinematic_state--> || /planning/scenario_planning/scenario_selector
+ /localization/kinematic_state--> || /planning/planning_evaluator
+ /localization/kinematic_state--> || /control/external_cmd_converter
+ /localization/kinematic_state--> || /control/trajectory_follower/controller_node_exe
+ /localization/kinematic_state--> || /control/trajectory_follower/lane_departure_checker_node
+ /localization/kinematic_state--> || /control/vehicle_cmd_gate
+ /localization/kinematic_state--> || /control/operation_mode_transition_manager
+ /localization/kinematic_state--> || /default_ad_api/node/motion
+ /localization/kinematic_state--> || /default_ad_api/node/planning
+ /perception/object_recognition/objects--> || /planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker
+ /perception/object_recognition/objects--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner
+ /perception/object_recognition/objects--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter
+ /perception/object_recognition/objects--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /perception/object_recognition/objects--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /perception/object_recognition/objects--> || /system/topic_state_monitor_object_recognition_objects
+ /perception/object_recognition/objects--> || /planning/planning_evaluator
+ /perception/obstacle_segmentation/pointcloud--> || /planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker
+ /perception/obstacle_segmentation/pointcloud--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner
+ /perception/obstacle_segmentation/pointcloud--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter
+ /perception/obstacle_segmentation/pointcloud--> || /perception/object_recognition/detection/voxel_based_compare_map_filter
+ /perception/obstacle_segmentation/pointcloud--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /perception/obstacle_segmentation/pointcloud--> || /system/topic_state_monitor_obstacle_segmentation_pointcloud
+ /localization/acceleration--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner
+ /localization/acceleration--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /localization/acceleration--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /localization/acceleration--> || /control/trajectory_follower/controller_node_exe
+ /localization/acceleration--> || /control/vehicle_cmd_gate
+ /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter/trajectory--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner
+ /planning/scenario_planning/lane_driving/behavior_planning/path--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner
+ /map/vector_map--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter
+ /map/vector_map--> || /perception/object_recognition/prediction/map_based_prediction
+ /map/vector_map--> || /perception/traffic_light_recognition/traffic_light_map_visualizer
+ /map/vector_map--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /map/vector_map--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /map/vector_map--> || /perception/traffic_light_recognition/crosswalk_traffic_light_estimator
+ /map/vector_map--> || /perception/traffic_light_recognition/traffic_light_map_based_detector
+ /map/vector_map--> || /system/topic_state_monitor_vector_map
+ /map/vector_map--> || /planning/mission_planning/mission_planner
+ /map/vector_map--> || /map/lanelet2_map_visualization
+ /map/vector_map--> || /map/vector_map_tf_generator
+ /map/vector_map--> || /planning/scenario_planning/scenario_selector
+ /map/vector_map--> || /control/trajectory_follower/lane_departure_checker_node
+ /map/vector_map--> || /perception/object_recognition/detection/object_lanelet_filter
+ /perception/occupancy_grid_map/map--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter
+ /perception/occupancy_grid_map/map--> || /perception/obstacle_segmentation/occupancy_grid_map_outlier_filter
+ /perception/occupancy_grid_map/map--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /perception/occupancy_grid_map/map--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/trajectory--> || /planning/scenario_planning/lane_driving/motion_planning/obstacle_velocity_limiter
+ /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/trajectory--> || /planning/planning_evaluator
+ /control/command/control_cmd--> || /system/mrm_emergency_stop_operator
+ /control/command/control_cmd--> || /system/topic_state_monitor_control_command_control_cmd
+ /control/command/control_cmd--> || /system/emergency_handler
+ /control/command/control_cmd--> || /control/operation_mode_transition_manager
+ /control/command/control_cmd--> || /jw_interface_awiv_adapt_sender
+ /planning/mission_planning/route--> || /planning/mission_planning/goal_pose_visualizer
+ /planning/mission_planning/route--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /planning/mission_planning/route--> || /perception/traffic_light_recognition/crosswalk_traffic_light_estimator
+ /planning/mission_planning/route--> || /perception/traffic_light_recognition/traffic_light_map_based_detector
+ /planning/mission_planning/route--> || /system/topic_state_monitor_mission_planning_route
+ /planning/mission_planning/route--> || /planning/scenario_planning/scenario_selector
+ /planning/mission_planning/route--> || /control/trajectory_follower/lane_departure_checker_node
+ /planning/mission_planning/route--> || /default_ad_api/node/routing
+ /sensing/camera/default_cam/camera_info--> || /sensing/camera/image_proc2
+ /sensing/camera/default_cam/image--> || /sensing/camera/image_proc2
+ /sensing/camera/image_raw--> || /sensing/camera/image_proc2
+ /sensing/camera/image_raw--> || /sensing/camera/image_proc
+ /autoware/state--> || /system/system_error_monitor
+ /autoware/state--> || /control/shift_decider
+ /control/current_gate_mode--> || /system/system_error_monitor
+ /control/current_gate_mode--> || /control/external_cmd_converter
+ /control/current_gate_mode--> || /control/operation_mode_transition_manager
+ /diagnostics_agg--> || /system/system_error_monitor
+ /vehicle/status/control_mode--> || /system/system_error_monitor
+ /vehicle/status/control_mode--> || /system/emergency_handler
+ /vehicle/status/control_mode--> || /control/operation_mode_transition_manager
+ /perception/object_recognition/detection/centerpoint/validation/objects--> || /perception/object_recognition/detection/object_association_merger_npc230120_665566_284759802789981393
+ /perception/object_recognition/detection/clustering/objects--> || /perception/object_recognition/detection/object_association_merger_npc230120_665566_284759802789981393
+ /perception/object_recognition/detection/clustering/short_range/pointcloud--> || /perception/object_recognition/detection/clustering/voxel_grid_filter_npc230120_665566_2120607776796521301
+ /perception/object_recognition/detection/pointcloud_map_filtered/pointcloud--> || /perception/object_recognition/detection/clustering/short_distance_crop_box_range
+ /perception/object_recognition/detection/pointcloud_map_filtered/pointcloud--> || /perception/object_recognition/detection/clustering/long_distance_crop_box_range
+ /perception/object_recognition/detection/pointcloud_map_filtered/pointcloud--> || /perception/object_recognition/detection/obstacle_pointcloud_based_validator_node
+ /perception/object_recognition/detection/clustering/downsampled/short_range/pointcloud--> || /perception/object_recognition/detection/clustering/outlier_filter
+ /perception/object_recognition/detection/clustering/long_range/pointcloud--> || /perception/object_recognition/detection/clustering/concat_downsampled_pcl
+ /perception/object_recognition/detection/clustering/outlier_filter/pointcloud--> || /perception/object_recognition/detection/clustering/concat_downsampled_pcl
+ /vehicle/status/velocity_status--> || /perception/object_recognition/detection/clustering/concat_downsampled_pcl
+ /vehicle/status/velocity_status--> || /sensing/lidar/concatenate_data
+ /vehicle/status/velocity_status--> || /system/topic_state_monitor_vehicle_status_velocity_status
+ /vehicle/status/velocity_status--> || /sensing/imu/vehicle_velocity_converter_node
+ /perception/object_recognition/detection/clustering/downsampled/concatenated/pointcloud--> || /perception/object_recognition/detection/clustering/euclidean_cluster
+ /perception/object_recognition/tracking/objects--> || /perception/object_recognition/prediction/map_based_prediction
+ /perception/object_recognition/tracking/objects--> || /perception/object_recognition/detection/detection_by_tracker/detection_by_tracker_node
+ /perception/object_recognition/detection/clustering/objects_with_feature--> || /perception/object_recognition/detection/detection_by_tracker/detection_by_tracker_node
+ /perception/object_recognition/detection/clustering/objects_with_feature--> || /perception/object_recognition/detection/clustering/detected_object_feature_remover
+ /perception/object_recognition/detection/detection_by_tracker/objects--> || /perception/object_recognition/detection/object_association_merger_npc230120_665566_6682532984608266669
+ /perception/object_recognition/detection/temporary_merged_objects--> || /perception/object_recognition/detection/object_association_merger_npc230120_665566_6682532984608266669
+ /api/localization/initialization_state--> || /localization/util/default_ad_api/helpers/automatic_pose_initializer
+ /api/localization/initialization_state--> || /default_ad_api/node/autoware_state
+ /api/operation_mode/state--> || /default_ad_api/node/autoware_state
+ /api/routing/state--> || /default_ad_api/helpers/routing_adaptor
+ /api/routing/state--> || /default_ad_api/node/autoware_state
+ /control/trajectory_follower/lateral/predicted_trajectory--> || /control/trajectory_follower/lane_departure_checker_node
+ /localization/pose_twist_fusion_filter/pose--> || /system/topic_state_monitor_pose_twist_fusion_filter_pose
+ /map/pointcloud_map--> || /system/topic_state_monitor_pointcloud_map
+ /planning/scenario_planning/modified_goal--> || /planning/mission_planning/mission_planner
+ /planning/scenario_planning/modified_goal--> || /planning/planning_evaluator
+ /planning/scenario_planning/trajectory--> || /system/topic_state_monitor_scenario_planning_trajectory
+ /planning/scenario_planning/trajectory--> || /planning/planning_evaluator
+ /planning/scenario_planning/trajectory--> || /control/trajectory_follower/controller_node_exe
+ /planning/scenario_planning/trajectory--> || /control/trajectory_follower/lane_departure_checker_node
+ /planning/scenario_planning/trajectory--> || /control/operation_mode_transition_manager
+ /planning/scenario_planning/trajectory--> || /default_ad_api/node/planning
+ /sensing/gnss/pose_with_covariance--> || /localization/pose_estimator/ndt_scan_matcher
+ /sensing/lidar/concatenated/pointcloud--> || /localization/util/crop_box_filter_measurement_range
+ /sensing/lidar/concatenated/pointcloud--> || /perception/obstacle_segmentation/crop_box_filter
+ /sensing/lidar/concatenated/pointcloud--> || /perception/occupancy_grid_map/occupancy_grid_map_node
+ /sensing/lidar/concatenated/pointcloud--> || /perception/object_recognition/detection/centerpoint/lidar_centerpoint
+ /vehicle/status/gear_status--> || /control/vehicle_cmd_gate
+ /vehicle/status/steering_status--> || /system/topic_state_monitor_vehicle_status_steering_status
+ /vehicle/status/steering_status--> || /control/trajectory_follower/controller_node_exe
+ /vehicle/status/steering_status--> || /control/vehicle_cmd_gate
+ /planning/cooperate_status/avoidance_left--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/avoidance_right--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/blind_spot--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/crosswalk--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/detection_area--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/external_request_lane_change_left--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/external_request_lane_change_right--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/intersection--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/intersection_occlusion--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/lane_change_left--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/lane_change_right--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/no_stopping_area--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/pull_out--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/pull_over--> || /autoware_api/external/rtc_controller/node
+ /planning/cooperate_status/traffic_light--> || /autoware_api/external/rtc_controller/node
+ /localization/initialization_state--> || /perception/object_recognition/detection/voxel_based_compare_map_filter
+ /localization/initialization_state--> || /default_ad_api/node/localization
+ /localization/pose_estimator/pose_with_covariance--> || /perception/object_recognition/detection/voxel_based_compare_map_filter
+ /localization/pose_estimator/pose_with_covariance--> || /localization/pose_twist_fusion_filter/ekf_localizer
+ /sensing/lidar/front/velodyne_packets--> || /sensing/lidar/front/velodyne_convert_node
+ /sensing/lidar/rear/velodyne_packets--> || /sensing/lidar/rear/velodyne_convert_node
+ /sensing/lidar/front/outlier_filtered/pointcloud--> || /sensing/lidar/concatenate_data
+ /sensing/lidar/rear/outlier_filtered/pointcloud--> || /sensing/lidar/concatenate_data
+ /perception/obstacle_segmentation/single_frame/pointcloud_raw--> || /perception/occupancy_grid_map/occupancy_grid_map_node
+ /perception/obstacle_segmentation/single_frame/pointcloud_raw--> || /perception/obstacle_segmentation/occupancy_grid_map_outlier_filter
+ /localization/util/measurement_range/pointcloud--> || /localization/util/voxel_grid_downsample_filter
+ /sensing/lidar/front/pointcloud_raw_ex--> || /sensing/lidar/front/crop_box_filter_self
+ /sensing/lidar/rear/pointcloud_raw_ex--> || /sensing/lidar/rear/crop_box_filter_self
+ /perception/obstacle_segmentation/range_cropped/pointcloud--> || /perception/obstacle_segmentation/common_ground_filter
+ /localization/util/voxel_grid_downsample/pointcloud--> || /localization/util/random_downsample_filter
+ /sensing/lidar/front/self_cropped/pointcloud_ex--> || /sensing/lidar/front/crop_box_filter_mirror
+ /sensing/lidar/rear/self_cropped/pointcloud_ex--> || /sensing/lidar/rear/crop_box_filter_mirror
+ /sensing/imu/imu_data--> || /sensing/lidar/front/distortion_corrector_node
+ /sensing/imu/imu_data--> || /sensing/lidar/rear/distortion_corrector_node
+ /sensing/imu/imu_data--> || /localization/twist_estimator/gyro_odometer
+ /sensing/lidar/front/mirror_cropped/pointcloud_ex--> || /sensing/lidar/front/distortion_corrector_node
+ /sensing/vehicle_velocity_converter/twist_with_covariance--> || /sensing/lidar/front/distortion_corrector_node
+ /sensing/vehicle_velocity_converter/twist_with_covariance--> || /sensing/lidar/rear/distortion_corrector_node
+ /sensing/vehicle_velocity_converter/twist_with_covariance--> || /localization/util/pose_initializer_node
+ /sensing/vehicle_velocity_converter/twist_with_covariance--> || /localization/twist_estimator/gyro_odometer
+ /sensing/lidar/rear/mirror_cropped/pointcloud_ex--> || /sensing/lidar/rear/distortion_corrector_node
+ /sensing/lidar/front/rectified/pointcloud_ex--> || /sensing/lidar/front/ring_outlier_filter
+ /sensing/lidar/rear/rectified/pointcloud_ex--> || /sensing/lidar/rear/ring_outlier_filter
+ /localization/pose_twist_fusion_filter/kinematic_state--> || /localization/pose_twist_fusion_filter/stop_filter
+ /jw/status--> || /jw_interface_awiv_adapt_receiver
+ /sensing/camera/c1/camera_info--> || /sensing/camera/image_proc
+ /sensing/camera/c1/image--> || /sensing/camera/image_proc
+ /perception/traffic_light_recognition/traffic_signals--> || /perception/traffic_light_recognition/traffic_light_map_visualizer
+ /perception/traffic_light_recognition/traffic_signals--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /perception/traffic_light_recognition/traffic_signals--> || /perception/traffic_light_recognition/traffic_light_roi_visualizer
+ /perception/object_recognition/detection/centerpoint/objects--> || /perception/object_recognition/detection/obstacle_pointcloud_based_validator_node
+ /planning/scenario_planning/scenario--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /system/operation_mode/state--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner
+ /system/operation_mode/state--> || /control/trajectory_follower/controller_node_exe
+ /system/operation_mode/state--> || /control/vehicle_cmd_gate
+ /system/operation_mode/state--> || /default_ad_api/node/operation_mode
+ /system/operation_mode/state--> || /default_ad_api/node/routing
+ /planning/scenario_planning/lane_driving/behavior_planning/path_with_lane_id--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /planning/scenario_planning/max_velocity_default--> || /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner
+ /planning/scenario_planning/max_velocity_default--> || /planning/scenario_planning/external_velocity_limit_selector
+ /perception/object_recognition/detection/clustering/clusters--> || /perception/object_recognition/detection/clustering/shape_estimation
+ /perception/traffic_light_recognition/classified/traffic_signals--> || /perception/traffic_light_recognition/crosswalk_traffic_light_estimator
+ /perception/traffic_light_recognition/rois--> || /perception/traffic_light_recognition/traffic_light_classifier
+ /perception/traffic_light_recognition/rois--> || /perception/traffic_light_recognition/traffic_light_roi_visualizer
+ /sensing/camera/traffic_light/image_raw--> || /perception/traffic_light_recognition/traffic_light_classifier
+ /sensing/camera/traffic_light/image_raw--> || /perception/traffic_light_recognition/traffic_light_ssd_fine_detector
+ /sensing/camera/traffic_light/image_raw--> || /perception/traffic_light_recognition/traffic_light_roi_visualizer
+ /perception/traffic_light_recognition/rough/rois--> || /perception/traffic_light_recognition/traffic_light_ssd_fine_detector
+ /perception/traffic_light_recognition/rough/rois--> || /perception/traffic_light_recognition/traffic_light_roi_visualizer
+ /diagnostics--> || /system/component_state_monitor/component
+ /diagnostics--> || /aggregator_node
+ /initialpose--> || /default_ad_api/helpers/initial_pose_adaptor
+ /planning/mission_planning/checkpoint--> || /default_ad_api/helpers/routing_adaptor
+ /planning/mission_planning/goal--> || /default_ad_api/helpers/routing_adaptor
+ /jw/command--> || /jw_interface
+ /localization/pose_twist_fusion_filter/biased_pose_with_covariance--> || /localization/pose_estimator/ndt_scan_matcher
+ /localization/util/downsample/pointcloud--> || /localization/pose_estimator/ndt_scan_matcher
+ /initialpose3d--> || /system/topic_state_monitor_initialpose3d
+ /initialpose3d--> || /localization/pose_twist_fusion_filter/ekf_localizer
+ /planning/scenario_planning/motion_velocity_smoother/trajectory--> || /planning/planning_validator
+ /perception/object_recognition/detection/objects--> || /perception/object_recognition/tracking/multi_object_tracker
+ /planning/scenario_planning/max_velocity--> || /planning/scenario_planning/motion_velocity_smoother
+ /planning/scenario_planning/scenario_selector/trajectory--> || /planning/scenario_planning/motion_velocity_smoother
+ /microstrain_inertial_driver/transition_event--> || /launch_ros_665566
+ /system/emergency/hazard_status--> || /system/emergency_handler
+ /system/mrm/comfortable_stop/status--> || /system/emergency_handler
+ /system/mrm/emergency_stop/status--> || /system/emergency_handler
+ /localization/twist_estimator/twist_with_covariance--> || /localization/pose_twist_fusion_filter/twist2accel
+ /localization/twist_estimator/twist_with_covariance--> || /localization/pose_twist_fusion_filter/ekf_localizer
+ /system/emergency/control_cmd--> || /system/topic_state_monitor_system_emergency_control_cmd
+ /system/emergency/control_cmd--> || /control/vehicle_cmd_gate
+ /planning/scenario_planning/lane_driving/trajectory--> || /planning/scenario_planning/scenario_selector
+ /service_log--> || /system/service_log_checker
+ /planning/scenario_planning/clear_velocity_limit--> || /planning/scenario_planning/external_velocity_limit_selector
+ /planning/scenario_planning/max_velocity_candidates--> || /planning/scenario_planning/external_velocity_limit_selector
+ /external/selected/external_control_cmd--> || /control/external_cmd_converter
+ /external/selected/gear_cmd--> || /control/external_cmd_converter
+ /external/selected/gear_cmd--> || /control/vehicle_cmd_gate
+ /external/selected/heartbeat--> || /control/external_cmd_converter
+ /external/selected/heartbeat--> || /control/vehicle_cmd_gate
+ /control/trajectory_follower/control_cmd--> || /control/shift_decider
+ /control/trajectory_follower/control_cmd--> || /control/vehicle_cmd_gate
+ /control/trajectory_follower/control_cmd--> || /system/topic_state_monitor_trajectory_follower_control_cmd
+ /autoware/engage--> || /control/vehicle_cmd_gate
+ /control/gate_mode_cmd--> || /control/vehicle_cmd_gate
+ /control/shift_decider/gear_cmd--> || /control/vehicle_cmd_gate
+ /external/selected/control_cmd--> || /control/vehicle_cmd_gate
+ /external/selected/hazard_lights_cmd--> || /control/vehicle_cmd_gate
+ /external/selected/turn_indicators_cmd--> || /control/vehicle_cmd_gate
+ /planning/hazard_lights_cmd--> || /control/vehicle_cmd_gate
+ /planning/turn_indicators_cmd--> || /control/vehicle_cmd_gate
+ /system/emergency/gear_cmd--> || /control/vehicle_cmd_gate
+ /system/emergency/hazard_lights_cmd--> || /control/vehicle_cmd_gate
+ /system/fail_safe/mrm_state--> || /control/vehicle_cmd_gate
+ /system/fail_safe/mrm_state--> || /default_ad_api/node/fail_safe
+ /api/autoware/get/engage--> || /control/operation_mode_transition_manager
+ /control/external_cmd_selector/current_selector_mode--> || /control/operation_mode_transition_manager
+ /control/vehicle_cmd_gate/operation_mode--> || /control/operation_mode_transition_manager
+ /system/component_state_monitor/component/launch/control--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/localization--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/map--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/perception--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/planning--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/sensing--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/system--> || /default_ad_api/node/autoware_state
+ /system/component_state_monitor/component/launch/vehicle--> || /default_ad_api/node/autoware_state
+ /control/vehicle_cmd_gate/is_paused--> || /default_ad_api/node/motion
+ /control/vehicle_cmd_gate/is_start_requested--> || /default_ad_api/node/motion
+ /system/component_state_monitor/component/autonomous/control--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/localization--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/map--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/perception--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/planning--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/sensing--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/system--> || /default_ad_api/node/operation_mode
+ /system/component_state_monitor/component/autonomous/vehicle--> || /default_ad_api/node/operation_mode
+ /planning/steering_factor/avoidance--> || /default_ad_api/node/planning
+ /planning/steering_factor/intersection--> || /default_ad_api/node/planning
+ /planning/steering_factor/lane_change--> || /default_ad_api/node/planning
+ /planning/steering_factor/pull_out--> || /default_ad_api/node/planning
+ /planning/steering_factor/pull_over--> || /default_ad_api/node/planning
+ /planning/velocity_factors/blind_spot--> || /default_ad_api/node/planning
+ /planning/velocity_factors/crosswalk--> || /default_ad_api/node/planning
+ /planning/velocity_factors/detection_area--> || /default_ad_api/node/planning
+ /planning/velocity_factors/intersection--> || /default_ad_api/node/planning
+ /planning/velocity_factors/merge_from_private--> || /default_ad_api/node/planning
+ /planning/velocity_factors/no_stopping_area--> || /default_ad_api/node/planning
+ /planning/velocity_factors/obstacle_stop--> || /default_ad_api/node/planning
+ /planning/velocity_factors/stop_line--> || /default_ad_api/node/planning
+ /planning/velocity_factors/surround_obstacle--> || /default_ad_api/node/planning
+ /planning/velocity_factors/traffic_light--> || /default_ad_api/node/planning
+ /planning/velocity_factors/walkway--> || /default_ad_api/node/planning
+ /planning/mission_planning/route_state--> || /default_ad_api/node/routing
+ /control/command/emergency_cmd--> || /jw_interface_awiv_adapt_sender
+ /control/command/gear_cmd--> || /jw_interface_awiv_adapt_sender
+ /perception/object_recognition/detection/objects_before_filter--> || /perception/object_recognition/detection/object_lanelet_filter
+```
+
